@@ -29,7 +29,6 @@ We will use some extra elements, so update dependencies first, in `bower.json` a
 ```json
   "iron-pages": "PolymerElements/iron-pages#^2.0.0",
   "iron-form": "PolymerElements/iron-form#^2.0.0",
-  "iron-ajax": "PolymerElements/iron-ajax#^2.0.0",
 ```
 
 Then install those new dependencies:
@@ -46,7 +45,6 @@ Now we need to include all the dependencies, in `public/index.html` update the i
   <script src="%PUBLIC_URL%/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
   <link rel="import" href="%PUBLIC_URL%/bower_components/iron-pages/iron-pages.html">
   <link rel="import" href="%PUBLIC_URL%/bower_components/iron-form/iron-form.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/iron-ajax/iron-ajax.html">
 
   <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-button/vaadin-button.html">
   <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-text-field/vaadin-text-field.html">
@@ -96,19 +94,50 @@ And a component specific style with few `lumo` theme variables, in `index.css` a
   }
 ```
 
-Now inside `App.js` we will construct the html responsible about rendering the app. Delete the content of `<div className="App">` in the return of the `render()` method and replace it by:
+Let's also create some data types to be used by the application:
 
-An ajax component to make html request:
+Create `Address.js` as following:
 
-```html
-  <iron-ajax
-    id="ajax"
-    ref={elem => this.ajax = elem}
-    auto
-    url="https://demo.vaadin.com/demo-data/1.0/people?count=200"
-    handle-as="json">
-  </iron-ajax>
+```js
+  import { Component } from 'react';
+
+  class Address extends Component {
+    constructor(props) {
+      super(props);
+
+      this.street = '';
+      this.city = '';
+      this.state = '';
+      this.zip = '';
+      this.country = '';
+      this.phone = '';
+    }
+  }
+
+  export default Address;
 ```
+
+And create `Person.js` as:
+
+```js
+  import { Component } from 'react';
+  import Address from './Address';
+
+  class Person extends Component {
+    constructor(props) {
+      super(props);
+
+      this.firstName = '';
+      this.LastName = '';
+      this.address = new Address();
+      this.email = '';
+    }
+  }
+
+  export default Person;
+```
+
+Now inside `App.js` we will construct the html responsible about rendering the app. Delete the content of `<div className="App">` in the return of the `render()` method and replace it by:
 
 A tabbed component to display two tabs:
 
@@ -143,7 +172,11 @@ We have two `div` holding cards, those are going to be the two pages of our comp
 A grid to hold the data:
 
 ```html
-  <vaadin-grid id="grid" items={this.state.users} ref={elem => this.grid = elem}>
+  <vaadin-grid
+    id="grid"
+    items={this.state.users}
+    selectedItems={this.state.selectedUsers}
+    ref={elem => this.grid = elem}>
     <vaadin-grid-column width="60px" flex-grow="0">
       <Template className="header">{'#'}</Template>
       <Template>{'[[index]]'}</Template>
@@ -206,9 +239,9 @@ A responsive form for data entry with validation:
         <vaadin-form-item>
           <label slot="label">First Name</label>
           <vaadin-text-field
-            id="fnField"
-            ref={elem => this.fnField = elem}
-            value={this.state.fnField}
+            id="firstName"
+            ref={elem => this.firstName = elem}
+            value={this.state.newUser.firstName}
             required error-message="Please enter first name" class="full-width">
           </vaadin-text-field>
         </vaadin-form-item>
@@ -216,9 +249,9 @@ A responsive form for data entry with validation:
         <vaadin-form-item>
           <label slot="label">Last Name</label>
           <vaadin-text-field
-            id="lnField"
-            ref={elem => this.lnField = elem}
-            value={this.state.lnField}
+            id="lastName"
+            ref={elem => this.lastName = elem}
+            value={this.state.newUser.lastName}
             required error-message="Please enter last name" class="full-width"></vaadin-text-field>
         </vaadin-form-item>
 
@@ -292,36 +325,38 @@ First in the `constructor` define few variables and methods that we will use:
   this.langauges = JSON.stringify(["Dutch", "English", "French"]);
 
   this.state = {
-    users: JSON.stringify([{}]),
     selectedPage: 0,
-    fnField: "",
-    lnField: "",
+    users: JSON.stringify([new Person()]),
+    selectedUsers: JSON.stringify([new Person()]),
+    newUser: new Person()
   };
 
-  this._handleResponse = this._handleResponse.bind(this);
   this.pageChanged = this.pageChanged.bind(this);
-  this.onFieldChange = this.onFieldChange.bind(this);
   this.onFieldChange = this.onFieldChange.bind(this);
   this.toggleDialog = this.toggleDialog.bind(this);
   this.submitForm = this.submitForm.bind(this);
 ```
 
-Add this method to populate the grid with data once the remote response is received:
-
-```js
-  _handleResponse(evt) {
-    this.setState({users: JSON.stringify(evt.detail.response.result)});
-  }
-```
-
-We also need this helper method to bind events:
+We also need this helper method to bind events as well as fetch data from the server to be displayed in the grid:
 
 ```js
   componentDidMount() {
-    this.ajax.addEventListener("response", this._handleResponse);
     this.tabs.addEventListener("selected-changed", this.pageChanged);
-    this.fnField.addEventListener("value-changed", this.onFieldChange);
-    this.lnField.addEventListener("value-changed", this.onFieldChange);
+    this.firstName.addEventListener("value-changed", this.onFieldChange);
+    this.lastName.addEventListener("value-changed", this.onFieldChange);
+
+    fetch("https://demo.vaadin.com/demo-data/1.0/people?count=200")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            users: JSON.stringify(result.result)
+          });
+        },
+        (error) => {
+          // Handle Error
+        }
+      );
   }
 ```
 
@@ -329,9 +364,9 @@ And this method to listen to filed changes:
 
 ```js
   onFieldChange(evt) {
-    let state = {};
+    let state = this.state.newUser;
     state[evt.srcElement.id] = evt.detail.value;
-    this.setState(state);
+    this.setState({newUser: state});
   }
 ```
 
@@ -357,16 +392,11 @@ And this function will process the form submission. First make sure that it’s 
   submitForm() {
     if (this.form.validate()) {
       this.successNotify.opened = true;
-      this.setState({formSubmittedOpen: true});
-      this.grid.items.unshift({
-        firstName: this.state.fnField,
-        lastName: this.state.lnField
-      });
-      this.setState({fnField: ''});
-      this.setState({lnField: ''});
+      this.grid.items.unshift(this.state.newUser);
       this.grid.selectedItems = [];
+      this.grid.selectItem(this.state.newUser);
       this.grid.clearCache();
-      this.grid.selectItem(this.grid.items[0])
+      this.setState({newUser: new Person()});
       this.setState({selectedPage: 0}); // Go back
     } else {
       this.invalidNotify.opened = true;

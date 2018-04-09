@@ -15,15 +15,10 @@ class App extends Component {
       newUser: new Person()
     };
 
-    this._handleResponse = this._handleResponse.bind(this);
     this.pageChanged = this.pageChanged.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
     this.submitForm = this.submitForm.bind(this);
-  }
-
-  _handleResponse(evt) {
-    this.setState({users: JSON.stringify(evt.detail.response.result)});
   }
 
   componentDidMount() {
@@ -42,7 +37,7 @@ class App extends Component {
         (error) => {
           // Handle Error
         }
-      )
+      );
   }
 
   pageChanged(evt) {
