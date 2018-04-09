@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Person from './Person';
 
 class App extends Component {
   constructor(props) {
@@ -8,15 +9,14 @@ class App extends Component {
     this.langauges = JSON.stringify(["Dutch", "English", "French"]);
 
     this.state = {
-      users: JSON.stringify([{}]),
       selectedPage: 0,
-      fnField: "",
-      lnField: "",
+      users: JSON.stringify([new Person()]),
+      selectedUsers: JSON.stringify([new Person()]),
+      newUser: new Person()
     };
 
     this._handleResponse = this._handleResponse.bind(this);
     this.pageChanged = this.pageChanged.bind(this);
-    this.onFieldChange = this.onFieldChange.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.toggleDialog = this.toggleDialog.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -29,8 +29,8 @@ class App extends Component {
   componentDidMount() {
     this.ajax.addEventListener("response", this._handleResponse);
     this.tabs.addEventListener("selected-changed", this.pageChanged);
-    this.fnField.addEventListener("value-changed", this.onFieldChange);
-    this.lnField.addEventListener("value-changed", this.onFieldChange);
+    this.firstName.addEventListener("value-changed", this.onFieldChange);
+    this.lastName.addEventListener("value-changed", this.onFieldChange);
   }
 
   pageChanged(evt) {
@@ -38,9 +38,9 @@ class App extends Component {
   }
 
   onFieldChange(evt) {
-    let state = {};
+    let state = this.state.newUser;
     state[evt.srcElement.id] = evt.detail.value;
-    this.setState(state);
+    this.setState({newUser: state});
   }
 
   toggleDialog() {
@@ -50,16 +50,10 @@ class App extends Component {
   submitForm() {
     if (this.form.validate()) {
       this.successNotify.opened = true;
-      this.setState({formSubmittedOpen: true});
-      this.grid.items.unshift({
-        firstName: this.state.fnField,
-        lastName: this.state.lnField
-      });
-      this.setState({fnField: ''});
-      this.setState({lnField: ''});
-      this.grid.selectedItems = [];
+      this.grid.items.unshift(this.state.newUser);
+      this.grid.selectItem(this.state.newUser);
       this.grid.clearCache();
-      this.grid.selectItem(this.grid.items[0])
+      this.setState({newUser: new Person()});
       this.setState({selectedPage: 0}); // Go back
     } else {
       this.invalidNotify.opened = true;
@@ -88,7 +82,11 @@ class App extends Component {
         <iron-pages selected={this.state.selectedPage}>
 
           <div className="card">
-            <vaadin-grid id="grid" items={this.state.users} ref={elem => this.grid = elem}>
+            <vaadin-grid
+              id="grid"
+              items={this.state.users}
+              selectedItems={this.state.selectedUsers}
+              ref={elem => this.grid = elem}>
               <vaadin-grid-column width="60px" flex-grow="0">
                 <Template className="header">{'#'}</Template>
                 <Template>{'[[index]]'}</Template>
@@ -132,9 +130,9 @@ class App extends Component {
                   <vaadin-form-item>
                     <label slot="label">First Name</label>
                     <vaadin-text-field
-                      id="fnField"
-                      ref={elem => this.fnField = elem}
-                      value={this.state.fnField}
+                      id="firstName"
+                      ref={elem => this.firstName = elem}
+                      value={this.state.newUser.firstName}
                       required error-message="Please enter first name" class="full-width">
                     </vaadin-text-field>
                   </vaadin-form-item>
@@ -142,9 +140,9 @@ class App extends Component {
                   <vaadin-form-item>
                     <label slot="label">Last Name</label>
                     <vaadin-text-field
-                      id="lnField"
-                      ref={elem => this.lnField = elem}
-                      value={this.state.lnField}
+                      id="lastName"
+                      ref={elem => this.lastName = elem}
+                      value={this.state.newUser.lastName}
                       required error-message="Please enter last name" class="full-width"></vaadin-text-field>
                   </vaadin-form-item>
 
