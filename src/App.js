@@ -27,10 +27,22 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.ajax.addEventListener("response", this._handleResponse);
     this.tabs.addEventListener("selected-changed", this.pageChanged);
     this.firstName.addEventListener("value-changed", this.onFieldChange);
     this.lastName.addEventListener("value-changed", this.onFieldChange);
+
+    fetch("https://demo.vaadin.com/demo-data/1.0/people?count=200")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            users: JSON.stringify(result.result)
+          });
+        },
+        (error) => {
+          // Handle Error
+        }
+      )
   }
 
   pageChanged(evt) {
@@ -51,6 +63,7 @@ class App extends Component {
     if (this.form.validate()) {
       this.successNotify.opened = true;
       this.grid.items.unshift(this.state.newUser);
+      this.grid.selectedItems = [];
       this.grid.selectItem(this.state.newUser);
       this.grid.clearCache();
       this.setState({newUser: new Person()});
@@ -63,14 +76,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <iron-ajax
-          id="ajax"
-          ref={elem => this.ajax = elem}
-          auto
-          url="https://demo.vaadin.com/demo-data/1.0/people?count=200"
-          handle-as="json">
-        </iron-ajax>
-
         <vaadin-tabs
           id="tabs"
           selected={this.state.selectedPage}
