@@ -1,75 +1,45 @@
 # Base Starter for Vaadin components with React
 
 ## Prerequisites
-First [install npm](https://docs.npmjs.com/getting-started/installing-node).
-Then install Bower:
-``` bash
-$ npm install -g bower
-```
+Install [npm](https://docs.npmjs.com/getting-started/installing-node).
 
 ## Running the application
 
 You can run the application by issuing the following commands at the root of the project in your terminal window:
 ``` bash
 $ npm install
-$ bower install
 $ npm start
 ```
-
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-
-Find information on how to perform common tasks in [this guide](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
-
 
 ## Recreating this project
 This project will continue on the [simple starter app](https://vaadin.com/start/v10-react) made by Vaadin.
 
-We will use some extra elements, so update dependencies first, in `bower.json` and in the `dependencies` section:
-
-```json
-  "iron-pages": "PolymerElements/iron-pages#^2.0.0",
-  "iron-form": "PolymerElements/iron-form#^2.0.0",
-```
-
-Then install those new dependencies:
+We will use some extra Vaadin components, we can install them using:
 
 ```bash
-  $ bower install
+  npm install --save @vaadin/vaadin-core
 ```
 
-If the app was running then a restart is required at this point.
+Now we need to include all the dependencies, in `src/App.s` update the imports to include:
 
-Now we need to include all the dependencies, in `public/index.html` update the imports to be:
-
-```html
-  <script src="%PUBLIC_URL%/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="%PUBLIC_URL%/bower_components/iron-pages/iron-pages.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/iron-form/iron-form.html">
-
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-button/vaadin-button.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-text-field/vaadin-text-field.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-text-field/vaadin-text-area.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-checkbox/vaadin-checkbox.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-combo-box/vaadin-combo-box.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-date-picker/vaadin-date-picker.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-tabs/vaadin-tabs.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-grid/vaadin-grid.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-grid/vaadin-grid-filter.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-form-layout/vaadin-form-layout.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-form-layout/vaadin-form-item.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-ordered-layout/vaadin-vertical-layout.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-dialog/vaadin-dialog.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-notification/vaadin-notification.html">
-
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-lumo-styles/icons.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-lumo-styles/color.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-lumo-styles/sizing.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-lumo-styles/spacing.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-lumo-styles/style.html">
-  <link rel="import" href="%PUBLIC_URL%/bower_components/vaadin-lumo-styles/typography.html">
+```js
+  import '@vaadin/vaadin-button/vaadin-button.js';
+  import '@vaadin/vaadin-text-field/vaadin-text-field.js';
+  import '@vaadin/vaadin-text-field/vaadin-text-area.js';
+  import '@vaadin/vaadin-checkbox/vaadin-checkbox.js';
+  import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
+  import '@vaadin/vaadin-date-picker/vaadin-date-picker.js';
+  import '@vaadin/vaadin-tabs/vaadin-tabs.js';
+  import '@vaadin/vaadin-grid/vaadin-grid.js';
+  import '@vaadin/vaadin-grid/vaadin-grid-filter.js';
+  import '@vaadin/vaadin-form-layout/vaadin-form-layout.js';
+  import '@vaadin/vaadin-form-layout/vaadin-form-item.js';
+  import '@vaadin/vaadin-ordered-layout/vaadin-vertical-layout.js';
+  import '@vaadin/vaadin-dialog/vaadin-dialog.js';
+  import '@vaadin/vaadin-notification/vaadin-notification.js';
 ```
 
-We will also make a slight change in the main app style, in `public/index.html` as well, update the custom style to be:
+We will also make a slight change in the main app style, in `public/index.html`, update the custom style to be:
 
 ```html
   <custom-style>
