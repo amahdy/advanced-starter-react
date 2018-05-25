@@ -1,19 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import '@vaadin/vaadin-button/vaadin-button.js';
-import '@vaadin/vaadin-text-field/vaadin-text-field.js';
-import '@vaadin/vaadin-text-field/vaadin-text-area.js';
-import '@vaadin/vaadin-checkbox/vaadin-checkbox.js';
-import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
-import '@vaadin/vaadin-date-picker/vaadin-date-picker.js';
-import '@vaadin/vaadin-tabs/vaadin-tabs.js';
-import '@vaadin/vaadin-grid/vaadin-grid.js';
-import '@vaadin/vaadin-grid/vaadin-grid-filter.js';
-import '@vaadin/vaadin-form-layout/vaadin-form-layout.js';
-import '@vaadin/vaadin-form-layout/vaadin-form-item.js';
-import '@vaadin/vaadin-ordered-layout/vaadin-vertical-layout.js';
-import '@vaadin/vaadin-dialog/vaadin-dialog.js';
-import '@vaadin/vaadin-notification/vaadin-notification.js';
+import '@polymer/iron-pages';
+import '@polymer/iron-form';
+import '@vaadin/vaadin-core';
 import Person from './Person';
 
 class App extends Component {

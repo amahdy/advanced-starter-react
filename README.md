@@ -1,42 +1,33 @@
 # Base Starter for Vaadin components with React
 
 ## Prerequisites
-Install [npm](https://docs.npmjs.com/getting-started/installing-node).
+Install [yarn](https://yarnpkg.com/docs/install).
 
 ## Running the application
 
 You can run the application by issuing the following commands at the root of the project in your terminal window:
 ``` bash
-$ npm install
-$ npm start
+$ yarn install
+$ yarn start
 ```
 
 ## Recreating this project
 This project will continue on the [simple starter app](https://vaadin.com/start/v10-react) made by Vaadin.
 
-We will use some extra Vaadin components, we can install them using:
+We will use some extra Vaadin components and iron elements, to install them:
 
 ```bash
-  npm install --save @vaadin/vaadin-core
+  yarn add @polymer/iron-pages
+  yarn add @polymer/iron-form
+  yarn add @vaadin/vaadin-core
 ```
 
-Now we need to include all the dependencies, in `src/App.s` update the imports to include:
+Now we need to include all the dependencies. In `src/App.s` update the imports to include:
 
 ```js
-  import '@vaadin/vaadin-button/vaadin-button.js';
-  import '@vaadin/vaadin-text-field/vaadin-text-field.js';
-  import '@vaadin/vaadin-text-field/vaadin-text-area.js';
-  import '@vaadin/vaadin-checkbox/vaadin-checkbox.js';
-  import '@vaadin/vaadin-combo-box/vaadin-combo-box.js';
-  import '@vaadin/vaadin-date-picker/vaadin-date-picker.js';
-  import '@vaadin/vaadin-tabs/vaadin-tabs.js';
-  import '@vaadin/vaadin-grid/vaadin-grid.js';
-  import '@vaadin/vaadin-grid/vaadin-grid-filter.js';
-  import '@vaadin/vaadin-form-layout/vaadin-form-layout.js';
-  import '@vaadin/vaadin-form-layout/vaadin-form-item.js';
-  import '@vaadin/vaadin-ordered-layout/vaadin-vertical-layout.js';
-  import '@vaadin/vaadin-dialog/vaadin-dialog.js';
-  import '@vaadin/vaadin-notification/vaadin-notification.js';
+  import '@polymer/iron-pages';
+  import '@polymer/iron-form';
+  import '@vaadin/vaadin-core';
 ```
 
 We will also make a slight change in the main app style, in `public/index.html`, update the custom style to be:

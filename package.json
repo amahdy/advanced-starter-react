@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@polymer/polymer": "^3.0.0-pre.13",
+    "@polymer/iron-form": "^3.0.0-pre.19",
+    "@polymer/iron-pages": "^3.0.0-pre.19",
+    "@polymer/polymer": "^3.0.0",
     "@vaadin/vaadin-core": "^10.0.0-pre.3",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "react": "^16.2.0",
