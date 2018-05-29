@@ -22,7 +22,7 @@ We will use some extra Vaadin components and iron elements, to install them:
   yarn add @vaadin/vaadin-core
 ```
 
-Now we need to include all the dependencies. In `src/App.s` update the imports to include:
+Now we need to include all the dependencies. In `src/App.js` update the imports to include:
 
 ```js
   import '@polymer/iron-pages';
