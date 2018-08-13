@@ -1,18 +1,8 @@
-# Base Starter for Vaadin components with React
+# Vaadin components with React
 
-## Prerequisites
-Install [yarn](https://yarnpkg.com/docs/install).
+> NOTE: This project will continue on the [Vaadin with React Starter App](https://vaadin.com/start/v10-react). Please download the starter before reading this tutorial.
 
-## Running the application
-
-You can run the application by issuing the following commands at the root of the project in your terminal window:
-``` bash
-$ yarn install
-$ yarn start
-```
-
-## Recreating this project
-This project will continue on the [simple starter app](https://vaadin.com/start/v10-react) made by Vaadin.
+### Instructions
 
 We will use some extra Vaadin components and iron elements, to install them:
 
