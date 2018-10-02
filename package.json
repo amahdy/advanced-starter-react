@@ -5,17 +5,32 @@
   "dependencies": {
     "@polymer/iron-form": "^3.0.0-pre.19",
     "@polymer/iron-pages": "^3.0.0-pre.19",
-    "@polymer/polymer": "^3.0.0",
     "@vaadin/vaadin-core": "^10.0.0-pre.3",
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "^2.0.0",
+    "vendor-copy": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "eject": "react-scripts eject",
+    "postinstall": "vendor-copy"
+  },
+  "vendorCopy": [
+    {
+      "from": "node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
+      "to": "public/vendor/custom-elements-es5-adapter.js"
+    },
+    {
+      "from": "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
+      "to": "public/vendor/webcomponents-bundle.js"
+    }
+  ],
+  "browserslist": [
+    "last 2 versions",
+    "ie 11"
+  ]
 }
